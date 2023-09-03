@@ -15,6 +15,7 @@ public class FirstPersonController : MonoBehaviour
 
     private InputAction moveAction;
     private InputAction rotateAction;
+    private InputAction sprintAction;
 
     private CharacterController characterController;
     public Camera FirstPersonCamera;
@@ -39,11 +40,14 @@ public class FirstPersonController : MonoBehaviour
     void Awake()
     {
         //Gets the character control component from the object
-       characterController = GetComponent<CharacterController>();
+        characterController = GetComponent<CharacterController>();
 
         //Sets the moveAction and rotateAction as the set action map functions
-       moveAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Move");
-       rotateAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Rotation");
+        moveAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Move");
+        rotateAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Rotation");
+        sprintAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Sprint");
+
+
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -52,8 +56,22 @@ public class FirstPersonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Sets moveValue to read the inputs and translates it into an x and y value in a Vector2
+        ProcessMove();
+        ProcessCamera();
+    }
+
+    private void ProcessMove()
+    {
+        Vector3 moveDirection = FirstPersonCamera.transform.forward * moveValue.y + FirstPersonCamera.transform.right * moveValue.x;
+        moveDirection.y = 0;
         moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
+
+        characterController.Move(moveDirection);
+    }
+
+    private void ProcessCamera()
+    {
+        //Sets moveValue to read the inputs and translates it into an x and y value in a Vector2
         rotateValue = rotateAction.ReadValue<Vector2>() * Time.deltaTime * 2500;
 
         currentRotationAngle = new Vector3(currentRotationAngle.x - rotateValue.y, currentRotationAngle.y + rotateValue.x, 0);
@@ -61,8 +79,22 @@ public class FirstPersonController : MonoBehaviour
         currentRotationAngle = new Vector3(Mathf.Clamp(currentRotationAngle.x, -85, 85), currentRotationAngle.y, currentRotationAngle.z);
 
         FirstPersonCamera.transform.rotation = Quaternion.Euler(currentRotationAngle);
+    }
+    private void ProcessSprint()
+    {
+        if (sprintAction.IsPressed())
+        {
+            moveSpeed = (moveSpeed + 0.1f) * Time.deltaTime;
+        }
+        else
+        {
+            moveSpeed = (moveSpeed - 0.1f) * Time.deltaTime;
+        }
+    }
 
-        characterController.Move(new Vector3(moveValue.x, 0, moveValue.y));
+    private void ProcessVerticalMovement()
+    {
+
     }
 
     //Triggers only in the unity editor
