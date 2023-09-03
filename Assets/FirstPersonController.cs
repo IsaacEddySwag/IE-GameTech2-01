@@ -10,6 +10,8 @@ using UnityEngine.InputSystem.LowLevel;
 public class FirstPersonController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float maxSpeed = 10f;
+    public float baseSpeed = 5f;
 
     public InputActionAsset CharacterActionAsset;
 
@@ -19,6 +21,8 @@ public class FirstPersonController : MonoBehaviour
 
     private CharacterController characterController;
     public Camera FirstPersonCamera;
+
+    private bool isSprinting = false;
 
     private Vector2 moveValue;
     private Vector2 rotateValue;
@@ -62,9 +66,27 @@ public class FirstPersonController : MonoBehaviour
 
     private void ProcessMove()
     {
+        isSprinting = sprintAction.IsPressed();
+
         Vector3 moveDirection = FirstPersonCamera.transform.forward * moveValue.y + FirstPersonCamera.transform.right * moveValue.x;
         moveDirection.y = 0;
         moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
+
+        if (isSprinting)
+        {
+            if(moveValue.x <= maxSpeed) 
+            {
+                moveSpeed = (float)(moveSpeed + 0.1);
+            }
+        }
+        else if(!isSprinting)
+        {
+            if (moveValue.x >= baseSpeed)
+            {
+                moveSpeed = (float)(moveSpeed - 0.1);
+
+            }
+        }
 
         characterController.Move(moveDirection);
     }
@@ -79,17 +101,6 @@ public class FirstPersonController : MonoBehaviour
         currentRotationAngle = new Vector3(Mathf.Clamp(currentRotationAngle.x, -85, 85), currentRotationAngle.y, currentRotationAngle.z);
 
         FirstPersonCamera.transform.rotation = Quaternion.Euler(currentRotationAngle);
-    }
-    private void ProcessSprint()
-    {
-        if (sprintAction.IsPressed())
-        {
-            moveSpeed = (moveSpeed + 0.1f) * Time.deltaTime;
-        }
-        else
-        {
-            moveSpeed = (moveSpeed - 0.1f) * Time.deltaTime;
-        }
     }
 
     private void ProcessVerticalMovement()
