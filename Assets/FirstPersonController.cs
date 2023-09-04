@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
@@ -10,19 +12,26 @@ using UnityEngine.InputSystem.LowLevel;
 public class FirstPersonController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float maxSpeed = 10f;
+    public float maxSpeed = 12f;
     public float baseSpeed = 5f;
+    public float maxJump = 0f;
+    private float vertMove = 0f;
+
+    public float basePov;
 
     public InputActionAsset CharacterActionAsset;
 
     private InputAction moveAction;
     private InputAction rotateAction;
     private InputAction sprintAction;
+    private InputAction jumpAction;
 
     private CharacterController characterController;
     public Camera FirstPersonCamera;
 
     private bool isSprinting = false;
+    public bool isJumping = false;
+    private bool doubleActive = true;
 
     private Vector2 moveValue;
     private Vector2 rotateValue;
@@ -50,43 +59,42 @@ public class FirstPersonController : MonoBehaviour
         moveAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Move");
         rotateAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Rotation");
         sprintAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Sprint");
-
-
+        jumpAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Jump");
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        basePov = FirstPersonCamera.fieldOfView;
     }
 
     // Update is called once per frame
     void Update()
     {
+        isSprinting = sprintAction.IsPressed();
+
         ProcessMove();
         ProcessCamera();
     }
 
     private void ProcessMove()
-    {
-        isSprinting = sprintAction.IsPressed();
+    { 
+        if (sprintAction.IsPressed())
+        {
+            FirstPersonCamera.fieldOfView = basePov + 20;
+            moveSpeed = maxSpeed;
+        }
+        else if (!sprintAction.IsPressed())
+        {
+            FirstPersonCamera.fieldOfView = basePov;
+            moveSpeed = baseSpeed;
+        }
 
+        moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
         Vector3 moveDirection = FirstPersonCamera.transform.forward * moveValue.y + FirstPersonCamera.transform.right * moveValue.x;
         moveDirection.y = 0;
-        moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
+        moveDirection.y = vertMove;
 
-        if (isSprinting)
-        {
-            if(moveValue.x <= maxSpeed) 
-            {
-                moveSpeed = (float)(moveSpeed + 0.1);
-            }
-        }
-        else if(!isSprinting)
-        {
-            if (moveValue.x >= baseSpeed)
-            {
-                moveSpeed = (float)(moveSpeed - 0.1);
-
-            }
-        }
+        ProcessVerticalMovement();
 
         characterController.Move(moveDirection);
     }
@@ -105,7 +113,29 @@ public class FirstPersonController : MonoBehaviour
 
     private void ProcessVerticalMovement()
     {
+        if(characterController.isGrounded) 
+        {
+            doubleActive = true;
+        }
 
+        if (characterController.isGrounded && vertMove < 0)
+        {
+            isJumping = false;
+            vertMove = 0;
+        }
+
+        bool jumpButtonDown = jumpAction.triggered && jumpAction.ReadValue<float>() > 0;
+
+        if (jumpButtonDown && (characterController.isGrounded || doubleActive))
+        {
+            vertMove += Mathf.Sqrt(maxJump * -2.0f * Physics.gravity.y);
+            doubleActive = false;
+            isJumping = true;
+        }
+
+        vertMove += Physics.gravity.y * Time.deltaTime;
+
+        characterController.Move(Vector3.up * vertMove * Time.deltaTime);
     }
 
     //Triggers only in the unity editor
