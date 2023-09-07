@@ -10148,8 +10148,10 @@ MonoBehaviour:
   baseSpeed: 5
   maxJump: 1
   basePov: 0
+  maxPov: 80
   CharacterActionAsset: {fileID: -944628639613478452, guid: 83758193d6c94f245bb7ce6d64e9a0a3, type: 3}
   FirstPersonCamera: {fileID: 963194227}
+  isSprinting: 0
   isJumping: 0
 --- !u!143 &376003476
 CharacterController:
@@ -10175,7 +10177,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &376003477
 Transform:

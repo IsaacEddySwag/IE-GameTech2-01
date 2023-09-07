@@ -17,7 +17,8 @@ public class FirstPersonController : MonoBehaviour
     public float maxJump = 0f;
     private float vertMove = 0f;
 
-    public float basePov;
+    public float basePov = 60;
+    public float maxPov = 80;
 
     public InputActionAsset CharacterActionAsset;
 
@@ -29,7 +30,7 @@ public class FirstPersonController : MonoBehaviour
     private CharacterController characterController;
     public Camera FirstPersonCamera;
 
-    private bool isSprinting = false;
+    public bool isSprinting = false;
     public bool isJumping = false;
     private bool doubleActive = true;
 
@@ -63,15 +64,11 @@ public class FirstPersonController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        basePov = FirstPersonCamera.fieldOfView;
     }
 
     // Update is called once per frame
     void Update()
     {
-        isSprinting = sprintAction.IsPressed();
-
         ProcessMove();
         ProcessCamera();
     }
@@ -80,21 +77,38 @@ public class FirstPersonController : MonoBehaviour
     { 
         if (sprintAction.IsPressed())
         {
-            FirstPersonCamera.fieldOfView = basePov + 20;
+            FirstPersonCamera.fieldOfView = Mathf.Lerp(FirstPersonCamera.fieldOfView, maxPov, 10f * Time.deltaTime);
+            isSprinting = true;
             moveSpeed = maxSpeed;
         }
-        else if (!sprintAction.IsPressed())
+        else if (!sprintAction.IsPressed() && isSprinting == true)
         {
-            FirstPersonCamera.fieldOfView = basePov;
+            FirstPersonCamera.fieldOfView = Mathf.Lerp(FirstPersonCamera.fieldOfView, basePov, 1.5f * Time.deltaTime); 
             moveSpeed = baseSpeed;
+            if(FirstPersonCamera.fieldOfView <= 60)
+            {
+                isSprinting = false;
+            }
         }
+
+        FirstPersonCamera.fieldOfView = Mathf.Clamp(FirstPersonCamera.fieldOfView, basePov, maxPov);
+
+        /*if (FirstPersonCamera.fieldOfView < 60)
+        {
+            FirstPersonCamera.fieldOfView = 60;
+        }
+
+        if(FirstPersonCamera.fieldOfView >= 79.90f)
+        {
+            FirstPersonCamera.fieldOfView = 80;
+        }*/
 
         moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
         Vector3 moveDirection = FirstPersonCamera.transform.forward * moveValue.y + FirstPersonCamera.transform.right * moveValue.x;
-        moveDirection.y = 0;
-        moveDirection.y = vertMove;
 
         ProcessVerticalMovement();
+
+        moveDirection.y = vertMove * Time.deltaTime;
 
         characterController.Move(moveDirection);
     }
@@ -116,11 +130,11 @@ public class FirstPersonController : MonoBehaviour
         if(characterController.isGrounded) 
         {
             doubleActive = true;
+            isJumping = false;
         }
 
         if (characterController.isGrounded && vertMove < 0)
         {
-            isJumping = false;
             vertMove = 0;
         }
 
@@ -135,7 +149,7 @@ public class FirstPersonController : MonoBehaviour
 
         vertMove += Physics.gravity.y * Time.deltaTime;
 
-        characterController.Move(Vector3.up * vertMove * Time.deltaTime);
+        Debug.Log(characterController.isGrounded);
     }
 
     //Triggers only in the unity editor
