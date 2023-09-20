@@ -20,6 +20,9 @@ public class FirstPersonController : MonoBehaviour
     public float basePov = 60;
     public float maxPov = 80;
 
+    public float sensitivityX = 2.0f;
+    public float sensitivityY = 2.0f;
+
     public InputActionAsset CharacterActionAsset;
 
     private InputAction moveAction;
@@ -93,16 +96,6 @@ public class FirstPersonController : MonoBehaviour
 
         FirstPersonCamera.fieldOfView = Mathf.Clamp(FirstPersonCamera.fieldOfView, basePov, maxPov);
 
-        /*if (FirstPersonCamera.fieldOfView < 60)
-        {
-            FirstPersonCamera.fieldOfView = 60;
-        }
-
-        if(FirstPersonCamera.fieldOfView >= 79.90f)
-        {
-            FirstPersonCamera.fieldOfView = 80;
-        }*/
-
         moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
         Vector3 moveDirection = FirstPersonCamera.transform.forward * moveValue.y + FirstPersonCamera.transform.right * moveValue.x;
 
@@ -115,10 +108,13 @@ public class FirstPersonController : MonoBehaviour
 
     private void ProcessCamera()
     {
-        //Sets moveValue to read the inputs and translates it into an x and y value in a Vector2
-        rotateValue = rotateAction.ReadValue<Vector2>() * Time.deltaTime * 800;
+        float rotationX = rotateValue.y * sensitivityY;
+        float rotationY = rotateValue.x * sensitivityX;
 
-        currentRotationAngle = new Vector3(currentRotationAngle.x - rotateValue.y, currentRotationAngle.y + rotateValue.x, 0);
+        //Sets moveValue to read the inputs and translates it into an x and y value in a Vector2
+        rotateValue = rotateAction.ReadValue<Vector2>() * Time.deltaTime;
+
+        currentRotationAngle = new Vector3(currentRotationAngle.x - rotationX, currentRotationAngle.y + rotationY, 0);
 
         currentRotationAngle = new Vector3(Mathf.Clamp(currentRotationAngle.x, -85, 85), currentRotationAngle.y, currentRotationAngle.z);
 
@@ -148,8 +144,6 @@ public class FirstPersonController : MonoBehaviour
         }
 
         vertMove += Physics.gravity.y * Time.deltaTime;
-
-        Debug.Log(characterController.isGrounded);
     }
 
     //Triggers only in the unity editor
