@@ -6,7 +6,7 @@ using UnityEngine;
 public class MyManager : MonoBehaviour
 {
     public static MyManager Instance;
-    private int playerScore = 0;
+    public int batteryCount = 0;
 
     private void Awake()
     {
@@ -30,8 +30,8 @@ public class MyManager : MonoBehaviour
         }
     }
 
-    private void AddScore(int scoreToAdd)
+    public void AddScore(int scoreToAdd)
     {
-        playerScore += scoreToAdd;
+        batteryCount += scoreToAdd;
     }
 }

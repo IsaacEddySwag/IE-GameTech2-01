@@ -116,7 +116,7 @@ public class FirstPersonController : MonoBehaviour
     private void ProcessCamera()
     {
         //Sets moveValue to read the inputs and translates it into an x and y value in a Vector2
-        rotateValue = rotateAction.ReadValue<Vector2>() * Time.deltaTime * 1500;
+        rotateValue = rotateAction.ReadValue<Vector2>() * Time.deltaTime * 800;
 
         currentRotationAngle = new Vector3(currentRotationAngle.x - rotateValue.y, currentRotationAngle.y + rotateValue.x, 0);
 
