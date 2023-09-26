@@ -11,6 +11,8 @@ public class MyManager : MonoBehaviour
 
     public UnityEvent batteries5;
 
+    public bool interactButton1 = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -41,5 +43,10 @@ public class MyManager : MonoBehaviour
     public void AddScore(int scoreToAdd)
     {
         batteryCount += scoreToAdd;
+    }
+
+    public void canInteract1()
+    {
+        interactButton1 = true;
     }
 }
