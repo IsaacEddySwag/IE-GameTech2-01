@@ -65,6 +65,7 @@ public class FirstPersonController : MonoBehaviour
         sprintAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Sprint");
         jumpAction = CharacterActionAsset.FindActionMap("Gameplay").FindAction("Jump");
 
+        //Disables cursor visability
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -72,12 +73,14 @@ public class FirstPersonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Calls both player and camera movement functions
         ProcessMove();
         ProcessCamera();
     }
 
     private void ProcessMove()
     { 
+        //Checks if the camera i
         if (sprintAction.IsPressed())
         {
             FirstPersonCamera.fieldOfView = Mathf.Lerp(FirstPersonCamera.fieldOfView, maxPov, 10f * Time.deltaTime);

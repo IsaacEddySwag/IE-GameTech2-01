@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MyManager : MonoBehaviour
 {
     public static MyManager Instance;
     public int batteryCount = 0;
+
+    public UnityEvent batteries5;
 
     private void Awake()
     {
@@ -20,6 +23,11 @@ public class MyManager : MonoBehaviour
             Debug.LogError("More than 1 instance of a manager", this);
             Destroy(this.gameObject);
         }
+    }
+
+    private void Update()
+    {
+        if(batteryCount >= 5) { batteries5.Invoke(); }
     }
 
     private void OnDisable()
