@@ -7,6 +7,7 @@ public class RayCastInteract : MonoBehaviour
 { 
     public InputActionAsset characterInputActions;
     public InputAction interactAction;
+    public InteractAnimator interactAnimator;
 
     public Camera playerCamera;
     public float distance = 2f;
@@ -36,10 +37,10 @@ public class RayCastInteract : MonoBehaviour
         Ray interactionRay = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit interactionHitInfo;
 
-        UIAnimationManager.Instance.ShowInteractPrompt(false);
+        interactAnimator.ShowInteractPrompt(false);
         if (Physics.Raycast(interactionRay, out interactionHitInfo, distance) && interactionHitInfo.transform.tag == "interactable")
         {
-            UIAnimationManager.Instance.ShowInteractPrompt(true);
+            interactAnimator.ShowInteractPrompt(true);
             if (interactInputPressed)
             {
                 interactionHitInfo.transform.SendMessage("onPlayerInteract", SendMessageOptions.DontRequireReceiver);

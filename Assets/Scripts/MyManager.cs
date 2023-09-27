@@ -12,6 +12,7 @@ public class MyManager : MonoBehaviour
     public UnityEvent batteries5;
 
     public bool interactButton1 = false;
+    public bool interactButton2 = false;
 
     private void Awake()
     {
@@ -48,5 +49,9 @@ public class MyManager : MonoBehaviour
     public void canInteract1()
     {
         interactButton1 = true;
+    }
+    public void canInteract2()
+    {
+        interactButton2 = true;
     }
 }
