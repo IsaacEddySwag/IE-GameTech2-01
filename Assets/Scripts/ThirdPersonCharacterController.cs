@@ -15,6 +15,8 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public float jumpMaxTime = 0.5f;
     public float jumpTimer = 0f;
 
+    public float playerHealth = 5f;
+
     private CharacterController characterController;
 
     public GameObject bullet;
@@ -64,6 +66,13 @@ public class ThirdPersonCharacterController : MonoBehaviour
         }
 
         characterController.Move(currentVelocity * Time.deltaTime);
+
+        death();
+
+        if(Input.GetKeyDown("f"))
+        {
+            tempHit();
+        }
     }
 
     public void OnMove(InputValue value)
@@ -111,5 +120,23 @@ public class ThirdPersonCharacterController : MonoBehaviour
         bulletCopy.transform.position = transform.forward;
         bulletCopy.GetComponent<Bullets>().Shoot(new Vector3(currentHorizontalVelocity.x, 0, currentHorizontalVelocity.y));
 
+    }
+
+    public void tempHit()
+    {
+        playerHealth -= 1;
+    }
+
+    public void death()
+    {
+        if (playerHealth <= 0)
+        {
+            playerHealth = 0;
+        }
+    }
+
+    public void isHit(float damage)
+    {
+        playerHealth -= damage;
     }
 }
