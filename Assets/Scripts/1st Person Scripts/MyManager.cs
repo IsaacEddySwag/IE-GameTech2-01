@@ -12,6 +12,7 @@ public class MyManager : MonoBehaviour
     public bool interactButton1 = false;
     public bool interactButton2 = false;
 
+    //Checks if another instance of the object exists, if so destroy self.
     private void Awake()
     {
         if(Instance == null)
@@ -34,15 +35,19 @@ public class MyManager : MonoBehaviour
         }
     }
 
+    //Adds score to the batteryCount variable
     public void AddScore(int scoreToAdd)
     {
         batteryCount += scoreToAdd;
     }
 
+    //Allows player to interact with second level button
     public void canInteract1()
     {
         interactButton1 = true;
     }
+
+    //Allows player to interact with third level button
     public void canInteract2()
     {
         interactButton2 = true;

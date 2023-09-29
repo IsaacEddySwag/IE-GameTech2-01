@@ -11,6 +11,8 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public float maxSpeed = 3f;
     public float moveAcceleration = 6f;
 
+    public Camera playerCamera;
+
     public float jumpSpeed = 5f;
     public float jumpMaxTime = 0.5f;
     public float jumpTimer = 0f;
@@ -35,7 +37,12 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     private void Update()
     {
-        currentHorizontalVelocity = Vector2.Lerp(currentHorizontalVelocity, moveInput * maxSpeed, Time.deltaTime * moveAcceleration);
+        Vector3 cameraSpaceMovement = new Vector3(moveInput.x, 0, moveInput.y);
+        cameraSpaceMovement = playerCamera.transform.TransformDirection(cameraSpaceMovement);
+
+        Vector2 cameraHorizontalMovement = new Vector2(cameraSpaceMovement.x, cameraSpaceMovement.z);
+
+        currentHorizontalVelocity = Vector2.Lerp(currentHorizontalVelocity, cameraHorizontalMovement * maxSpeed, Time.deltaTime * moveAcceleration);
 
         if(!isJumping)
         {
@@ -117,7 +124,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
         }
 
         GameObject bulletCopy = Instantiate(bullet);
-        bulletCopy.transform.position = transform.forward;
+        bulletCopy.transform.position = gameObject.transform.forward;
         bulletCopy.GetComponent<Bullets>().Shoot(new Vector3(currentHorizontalVelocity.x, 0, currentHorizontalVelocity.y));
 
     }

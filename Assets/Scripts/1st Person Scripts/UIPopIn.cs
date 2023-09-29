@@ -8,10 +8,12 @@ public class UIPopIn : MonoBehaviour
     private float batteryCount = 0;
     private Animator animator;
 
+    //Gets the animator for the attached compontent
     private void Awake()
     {
         animator = GetComponent<Animator>();
     }
+
     void Update()
     {
      if (GameObject.Find("GameManager").GetComponent<MyManager>().batteryCount > batteryCount)

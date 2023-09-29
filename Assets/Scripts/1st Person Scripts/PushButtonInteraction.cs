@@ -9,14 +9,17 @@ public class PushButtonInteraction : MonoBehaviour
     public ButtonAnimator button;
 
     public bool pressButton = false;
+
+    //Plays an event and then sets and animation variable to true before invoking the delay function
     public void onPlayerInteract()
     {
         pressButton = true;
         button.pushButton(pressButton);
         onPressButton.Invoke();
-        Invoke("delay", 5f);
+        Invoke("delay", 3f);
     }
 
+    //Resets the animation variable after a delay
     private void delay()
     {
         pressButton = false;

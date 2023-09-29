@@ -11,6 +11,7 @@ public class PushButtonInteraction1 : MonoBehaviour
     public bool interactButton1 = false;
     public bool interactButton2 = false;
 
+    //Keeps track of the batterCount and both Interact variables from the game manager
     private void Update()
     {
         //Keeps updating battery count to be the current batteries the player has collected
@@ -19,6 +20,7 @@ public class PushButtonInteraction1 : MonoBehaviour
         interactButton2 = GameObject.Find("GameManager").GetComponent<MyManager>().interactButton2;
     }
 
+    //Allows player to interact with certain buttons based on the variables it calls from the game manager
     public void onPlayerInteract()
     {
         //Activates event after 5 batteries have been collected

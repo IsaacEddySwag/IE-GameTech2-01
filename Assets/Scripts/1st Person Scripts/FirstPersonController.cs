@@ -80,13 +80,15 @@ public class FirstPersonController : MonoBehaviour
 
     private void ProcessMove()
     { 
-        //Checks if the camera i
+        //Checks if the player is sprinting, if so makes player faster and increase FOV
         if (sprintAction.IsPressed())
         {
             FirstPersonCamera.fieldOfView = Mathf.Lerp(FirstPersonCamera.fieldOfView, maxPov, 10f * Time.deltaTime);
             isSprinting = true;
             moveSpeed = maxSpeed;
         }
+
+        //If player isnt sprinting set speed and FOV back to normal
         else if (!sprintAction.IsPressed() && isSprinting == true)
         {
             FirstPersonCamera.fieldOfView = Mathf.Lerp(FirstPersonCamera.fieldOfView, basePov, 1.5f * Time.deltaTime); 
@@ -97,8 +99,12 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
+
+        //Clamps the field of view to to the base and max pov
         FirstPersonCamera.fieldOfView = Mathf.Clamp(FirstPersonCamera.fieldOfView, basePov, maxPov);
 
+
+        //Adds force to the player in vertical and horizontal positions based on player input
         moveValue = moveAction.ReadValue<Vector2>() * moveSpeed * Time.deltaTime;
         Vector3 moveDirection = FirstPersonCamera.transform.forward * moveValue.y + FirstPersonCamera.transform.right * moveValue.x;
 
@@ -117,6 +123,8 @@ public class FirstPersonController : MonoBehaviour
         //Sets moveValue to read the inputs and translates it into an x and y value in a Vector2
         rotateValue = rotateAction.ReadValue<Vector2>() * Time.deltaTime;
 
+
+        //Code finds the locations of the players camera rotation and keeps it in bounds finally affects camera rotation
         currentRotationAngle = new Vector3(currentRotationAngle.x - rotationX, currentRotationAngle.y + rotationY, 0);
 
         currentRotationAngle = new Vector3(Mathf.Clamp(currentRotationAngle.x, -85, 85), currentRotationAngle.y, currentRotationAngle.z);
@@ -126,19 +134,23 @@ public class FirstPersonController : MonoBehaviour
 
     private void ProcessVerticalMovement()
     {
+        //checks if the player is grounded and sets variables
         if(characterController.isGrounded) 
         {
             doubleActive = true;
             isJumping = false;
         }
 
+        //Changes player y position if their movement is negative and theyre grounded
         if (characterController.isGrounded && vertMove < 0)
         {
             vertMove = 0;
         }
-
+        
+        //Checks if the jumpaction button is triggered
         bool jumpButtonDown = jumpAction.triggered && jumpAction.ReadValue<float>() > 0;
 
+        //If jumpaction is triggered apply force the makes the player jump
         if (jumpButtonDown && (characterController.isGrounded || doubleActive))
         {
             vertMove += Mathf.Sqrt(maxJump * -2.0f * Physics.gravity.y);
@@ -146,6 +158,7 @@ public class FirstPersonController : MonoBehaviour
             isJumping = true;
         }
 
+        //Adds gravity to player character
         vertMove += Physics.gravity.y * Time.deltaTime;
     }
 

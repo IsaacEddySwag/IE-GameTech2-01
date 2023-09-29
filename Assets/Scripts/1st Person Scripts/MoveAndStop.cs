@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoveAndStop : MonoBehaviour
@@ -8,6 +9,7 @@ public class MoveAndStop : MonoBehaviour
     private Rigidbody rb;
     private bool isMoving = false;
 
+    //Gets the rigidbody of the script and sets the stop position to be 38f over the current position
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -31,6 +33,7 @@ public class MoveAndStop : MonoBehaviour
         }
     }
 
+    //Sets isMoving to true when called to activate the movement of the object
     public void PleaseMove()
     {
         isMoving = true;
