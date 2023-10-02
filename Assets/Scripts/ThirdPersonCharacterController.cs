@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ using UnityEngine.ProBuilder.MeshOperations;
 
 public class ThirdPersonCharacterController : MonoBehaviour
 {
+    public AnimateArm animateArm;
+
     public float maxSpeed = 3f;
     public float moveAcceleration = 6f;
 
@@ -19,9 +22,12 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     public float playerHealth = 5f;
 
+    public bool canMove = true;
+
     private CharacterController characterController;
 
     public GameObject bullet;
+    public Transform bulletSpawn;
 
     private Vector2 moveInput = Vector2.zero;
     private Vector2 currentHorizontalVelocity = Vector2.zero;
@@ -32,23 +38,37 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     private void Awake()
     {
+        animateArm = GameObject.Find("RArmPivot").GetComponent<AnimateArm>();
         characterController = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
     {
-        Vector3 cameraSpaceMovement = new Vector3(moveInput.x, 0, moveInput.y);
-        cameraSpaceMovement = playerCamera.transform.TransformDirection(cameraSpaceMovement);
+        if(canMove)
+        {
+            Movement();
+            CameraMovement();
+        }
 
-        Vector2 cameraHorizontalMovement = new Vector2(cameraSpaceMovement.x, cameraSpaceMovement.z);
+        bulletSpawn = GameObject.Find("BulletSpawnR").transform;
 
-        currentHorizontalVelocity = Vector2.Lerp(currentHorizontalVelocity, cameraHorizontalMovement * maxSpeed, Time.deltaTime * moveAcceleration);
+        death();
 
-        if(!isJumping)
+        if(Input.GetKeyDown("f"))
+        {
+            tempHit();
+        }
+    }
+
+    public void Movement()
+    {
+        if (!isJumping)
         {
             currentVerticalVelocity += Physics.gravity.y * Time.deltaTime;
-            
-            if(characterController.isGrounded && currentVerticalVelocity < 0)
+
+            if (characterController.isGrounded && currentVerticalVelocity < 0)
             {
                 currentVerticalVelocity = Physics.gravity.y * Time.deltaTime;
             }
@@ -57,7 +77,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
         {
             jumpTimer += Time.deltaTime;
 
-            if(jumpTimer >= jumpMaxTime)
+            if (jumpTimer >= jumpMaxTime)
             {
                 isJumping = false;
             }
@@ -73,13 +93,16 @@ public class ThirdPersonCharacterController : MonoBehaviour
         }
 
         characterController.Move(currentVelocity * Time.deltaTime);
+    }
 
-        death();
+    public void CameraMovement()
+    {
+        Vector3 cameraSpaceMovement = new Vector3(moveInput.x, 0, moveInput.y);
+        cameraSpaceMovement = playerCamera.transform.TransformDirection(cameraSpaceMovement);
 
-        if(Input.GetKeyDown("f"))
-        {
-            tempHit();
-        }
+        Vector2 cameraHorizontalMovement = new Vector2(cameraSpaceMovement.x, cameraSpaceMovement.z);
+
+        currentHorizontalVelocity = Vector2.Lerp(currentHorizontalVelocity, cameraHorizontalMovement * maxSpeed, Time.deltaTime * moveAcceleration);
     }
 
     public void OnMove(InputValue value)
@@ -112,21 +135,15 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
-        Collider[] overlapItems = Physics.OverlapBox(transform.position, Vector3.one);
 
-        if(overlapItems.Length > 0) 
-        {
-            foreach(Collider item in overlapItems) 
-            {
-                Vector3 direction = item.transform.position - transform.position;
-                item.SendMessage("OnPlayerAttack", direction, SendMessageOptions.DontRequireReceiver);
-            }
-        }
+        animateArm.armMove(true);
 
-        GameObject bulletCopy = Instantiate(bullet);
-        bulletCopy.transform.position = gameObject.transform.forward;
-        bulletCopy.GetComponent<Bullets>().Shoot(new Vector3(currentHorizontalVelocity.x, 0, currentHorizontalVelocity.y));
+    }
 
+    public void ThrowBall()
+    {
+        GameObject bulletCopy = Instantiate(bullet, bulletSpawn.position, Quaternion.identity);
+        bulletCopy.GetComponent<Bullets>().Shoot();
     }
 
     public void tempHit()

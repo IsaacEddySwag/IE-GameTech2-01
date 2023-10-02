@@ -5,13 +5,40 @@ using UnityEngine;
 public class Bullets : MonoBehaviour
 {
     Rigidbody rb;
+    private Raycast raycast;
+
+    public float shotSpeed = 5f;
+    public bool isShooting = false;
+
+    private Vector3 hitLocation;
+
+    public ParticleSystem puff;
+    
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        raycast = GameObject.Find("Main Camera").GetComponent<Raycast>();
     }
-    public void Shoot(Vector3 direction)
+
+    private void Update()
     {
-        rb.AddForce(direction.normalized * 5, ForceMode.Impulse);
+        if (isShooting)
+        {
+            var step = shotSpeed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, hitLocation, step);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Instantiate(puff, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.identity);
+        Destroy(this.gameObject);
+    }
+
+    public void Shoot()
+    {
+        hitLocation = raycast.hit;
+        isShooting = true;
     }
 }

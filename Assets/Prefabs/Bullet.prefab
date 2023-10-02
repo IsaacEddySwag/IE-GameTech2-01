@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 87.62747, y: 36.125263, z: 6.5082073}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.36924204, y: 0.36924204, z: 0.36924204}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -119,6 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86febbd51ac46604590987157e8f7efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shotSpeed: 40
+  isShooting: 0
+  puff: {fileID: 8617853139294444486, guid: ba18faab9da37e3438b0c94485660d96, type: 3}
 --- !u!54 &6929167263028512467
 Rigidbody:
   m_ObjectHideFlags: 0
