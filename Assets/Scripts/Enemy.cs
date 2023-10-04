@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float damage;
-    public float launch;
+    [SerializeField] private float damage;
+    [SerializeField] private float launch;
 
-    public ThirdPersonCharacterController playerController;
+    [SerializeField] private ThirdPersonCharacterController playerController;
     private Rigidbody rb;
+
+    [SerializeField] private ParticleSystem puff;
 
     // Start is called before the first frame update
     void Awake()
@@ -18,15 +20,6 @@ public class Enemy : MonoBehaviour
         launch = 10f;
         playerController = GameObject.Find("3rd Person Player").GetComponent<ThirdPersonCharacterController>();
         rb = GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
-            rb.AddForce(gameObject.transform.up * launch);
-            rb.AddForce(gameObject.transform.forward * launch);
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -39,11 +32,6 @@ public class Enemy : MonoBehaviour
         if(collision.gameObject.tag == "Bullet")
         {
             rb.AddExplosionForce(10, collision.GetContact(0).point, 0.1f, 1, ForceMode.Impulse);
-
-            //collision.GetContact(0).point spawn particle effects
-
-            //rb.AddForce(gameObject.transform.up * launch * Time.deltaTime);
-            //rb.AddForce(gameObject.transform.forward * launch * Time.deltaTime);
         }
     }
 }

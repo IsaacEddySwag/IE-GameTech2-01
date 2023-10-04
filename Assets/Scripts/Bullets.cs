@@ -28,6 +28,10 @@ public class Bullets : MonoBehaviour
             var step = shotSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, hitLocation, step);
         }
+        if(transform.position ==  hitLocation) w
+        {
+            isShooting = false;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

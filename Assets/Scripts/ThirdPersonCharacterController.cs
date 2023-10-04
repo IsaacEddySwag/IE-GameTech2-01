@@ -25,6 +25,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public bool canMove = true;
 
     private CharacterController characterController;
+    private Animator animator;
 
     public GameObject bullet;
     public Transform bulletSpawn;
@@ -39,6 +40,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
     private void Awake()
     {
         animateArm = GameObject.Find("RArmPivot").GetComponent<AnimateArm>();
+        animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -135,9 +137,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
-
         animateArm.armMove(true);
-
     }
 
     public void ThrowBall()
