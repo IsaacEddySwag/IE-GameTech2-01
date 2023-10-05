@@ -136,7 +136,10 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
-        animateArm.armMove(true);
+        if (canMove)
+        {
+            animateArm.armMove(true);
+        }
     }
 
     public void ThrowBall()

@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private ThirdPersonCharacterController playerController;
     private Rigidbody rb;
+    [SerializeField] private GameObject AIMover;
 
     // Start is called before the first frame update
     void Awake()
@@ -17,7 +18,14 @@ public class Enemy : MonoBehaviour
         damage = 1f;
         launch = 10f;
         playerController = GameObject.Find("3rd Person Player").GetComponent<ThirdPersonCharacterController>();
-        rb = GetComponent<Rigidbody>();
+        rb = AIMover.GetComponent<Rigidbody>();
+
+        if(rb.velocity == new Vector3(0, 0, 0))
+        {
+            rb.isKinematic = true;
+            //gameObject.transform.rotation = Quaternion.identity;
+            //rb.constraints = RigidbodyConstraints.FreezeRotation;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -29,7 +37,10 @@ public class Enemy : MonoBehaviour
 
         if(collision.gameObject.tag == "Bullet")
         {
+            Debug.Log("Hit");
             rb.AddExplosionForce(launch, collision.GetContact(0).point, 0.1f, 1, ForceMode.Impulse);
+            //rb.useGravity = false;
+            //rb.constraints = RigidbodyConstraints.None;
         }
     }
 }
