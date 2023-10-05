@@ -11,8 +11,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private ThirdPersonCharacterController playerController;
     private Rigidbody rb;
 
-    [SerializeField] private ParticleSystem puff;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -31,7 +29,7 @@ public class Enemy : MonoBehaviour
 
         if(collision.gameObject.tag == "Bullet")
         {
-            rb.AddExplosionForce(10, collision.GetContact(0).point, 0.1f, 1, ForceMode.Impulse);
+            rb.AddExplosionForce(launch, collision.GetContact(0).point, 0.1f, 1, ForceMode.Impulse);
         }
     }
 }

@@ -23,9 +23,9 @@ public class UpgradeThrowSpeed : MonoBehaviour
         }
     }
 
-    public void UpgradeThrow(float throwUp)
+    public void UpgradeThrow(float upgrade)
     {
-        throwSpeed += throwUp;
+        throwSpeed += upgrade;
 
         animator.SetFloat("Speed", throwSpeed);
     }

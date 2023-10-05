@@ -22,8 +22,6 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     public float playerHealth = 5f;
 
-    public bool canMove = true;
-
     private CharacterController characterController;
     private Animator animator;
 
@@ -36,6 +34,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     private bool jumpInputPressed;
     private bool isJumping;
+    public bool canMove = true;
 
     private void Awake()
     {
@@ -109,7 +108,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        moveInput = value.Get<Vector2>();
+        moveInput = value.Get<Vector2>(); 
     }
 
     public void OnJump(InputValue value) 
@@ -162,5 +161,27 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public void isHit(float damage)
     {
         playerHealth -= damage;
+    }
+
+    public void UpgradeSpeed(float upgrade)
+    {
+        maxSpeed += upgrade;
+        moveAcceleration += upgrade;
+    }
+
+    public void UpgradeJump(float upgrade)
+    {
+        jumpSpeed += upgrade;
+        jumpMaxTime += upgrade;
+    }
+
+    public void UpgradeHealth(float upgrade)
+    {
+        playerHealth += upgrade;
+    }
+
+    public void willItMove(bool willMove)
+    {
+        canMove = willMove;
     }
 }

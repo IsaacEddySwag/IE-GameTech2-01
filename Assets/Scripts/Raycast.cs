@@ -15,6 +15,8 @@ public class Raycast : MonoBehaviour
 
     public Vector3 hit;
 
+
+
     private void Awake()
     {
         characterInputActions.FindActionMap("Gameplay").Enable();
@@ -36,6 +38,9 @@ public class Raycast : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Convert vehicle 'local space' forward into 'world space' forward.
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+
         //Shoots out a raycast that hits objects based on the camera view
         bool interactInputPressed = interactAction.triggered && interactAction.ReadValue<float>() > 0;
 
@@ -43,7 +48,12 @@ public class Raycast : MonoBehaviour
 
 
         //Checks if the player hits an object tagged as interactable and actiavtes a UI element
-        hit = ray.direction * distance;
+        hit = ray.GetPoint(distance);
+    }
+
+    public void UpgradeDistance(float upgrade)
+    {
+        distance += upgrade;
     }
 
     private void OnDrawGizmos()

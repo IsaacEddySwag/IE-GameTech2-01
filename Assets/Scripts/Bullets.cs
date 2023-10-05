@@ -28,7 +28,7 @@ public class Bullets : MonoBehaviour
             var step = shotSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, hitLocation, step);
         }
-        if(transform.position ==  hitLocation) w
+        if(transform.position ==  hitLocation)
         {
             isShooting = false;
         }
