@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CharacterController))]
 
 public class ThirdPersonCharacterController : MonoBehaviour
 {
-    public AnimateArm animateArm;
+    public AnimateArm animateArm; 
 
     public float maxSpeed = 3f;
     public float moveAcceleration = 6f;
