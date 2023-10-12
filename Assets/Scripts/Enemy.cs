@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
         damage = 1f;
         launch = 10f;
         playerController = GameObject.Find("3rd Person Player").GetComponent<ThirdPersonCharacterController>();
-        rb = AIMover.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
         if(rb.velocity == new Vector3(0, 0, 0))
         {

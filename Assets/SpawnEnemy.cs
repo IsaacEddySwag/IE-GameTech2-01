@@ -8,7 +8,7 @@ public class SpawnEnemy : MonoBehaviour
     public GameObject enemy;
     void Start()
     {
-        delayTime = Random.Range(5, 41);
+        delayTime = Random.Range(10, 200);
         Invoke("Spawning", delayTime);
     }
 
