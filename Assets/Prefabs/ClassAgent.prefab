@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed52efe0be1ed148aa471702c0ae72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  agent: {fileID: 7149627952457162783}
   target: {fileID: 0}
 --- !u!114 &1683915193424447165
 MonoBehaviour:
@@ -191,7 +191,7 @@ MonoBehaviour:
   damage: 0
   launch: 0
   playerController: {fileID: 0}
-  AIMover: {fileID: 0}
+  AIMover: {fileID: 8670407172577384239}
 --- !u!1 &1017766715502449013
 GameObject:
   m_ObjectHideFlags: 0

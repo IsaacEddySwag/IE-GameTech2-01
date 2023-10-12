@@ -10,6 +10,11 @@ public class MoveToDestination : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform target;
 
+    private void Awake()
+    {
+        target = GameObject.Find("DestinationPoint").transform;
+    }
+
     private void Update()
     {
         agent = GetComponent<NavMeshAgent>();
