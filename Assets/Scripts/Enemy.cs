@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float damage;
+    [SerializeField] private int damage;
     [SerializeField] private float launch;
 
     [SerializeField] private ThirdPersonCharacterController playerController;
@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        damage = 1f;
+        damage = 1;
         launch = 10f;
         playerController = GameObject.Find("3rd Person Player").GetComponent<ThirdPersonCharacterController>();
         rb = GetComponent<Rigidbody>();
@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") 
         {
-            playerController.isHit(damage);
+            playerController.IsHit(damage);
         }
 
         if(collision.gameObject.tag == "Bullet")

@@ -5,12 +5,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(CharacterController))]
 
 public class ThirdPersonCharacterController : MonoBehaviour
 {
     public AnimateArm animateArm; 
+    public HealthBar healthBar;
 
     public float maxSpeed = 3f;
     public float moveAcceleration = 6f;
@@ -21,13 +23,15 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public float jumpMaxTime = 0.5f;
     public float jumpTimer = 0f;
 
-    public float playerHealth = 5f;
+    public float playerMaxHealth = 100f;
+    public float playerHealth;
 
     private CharacterController characterController;
     private Animator animator;
 
     public GameObject bullet;
     public Transform bulletSpawn;
+    public Animator lowHealthAnimator;
 
     private Vector2 moveInput = Vector2.zero;
     private Vector2 currentHorizontalVelocity = Vector2.zero;
@@ -42,8 +46,12 @@ public class ThirdPersonCharacterController : MonoBehaviour
         animateArm = GameObject.Find("RArmPivot").GetComponent<AnimateArm>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        healthBar.SetMaxHealth(playerMaxHealth);
+        playerHealth = playerMaxHealth;
     }
 
     private void Update()
@@ -56,11 +64,11 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
         bulletSpawn = GameObject.Find("BulletSpawnR").transform;
 
-        death();
+        Death();
 
         if(Input.GetKeyDown("f"))
         {
-            tempHit();
+            IsHit(5f);
         }
     }
 
@@ -149,22 +157,26 @@ public class ThirdPersonCharacterController : MonoBehaviour
         bulletCopy.GetComponent<Bullets>().Shoot();
     }
 
-    public void tempHit()
-    {
-        playerHealth -= 1;
-    }
-
-    public void death()
+    public void Death()
     {
         if (playerHealth <= 0)
         {
             playerHealth = 0;
         }
+        else if(playerHealth <= playerMaxHealth / 5) 
+        {
+            lowHealthAnimator.SetBool("LowHealth", true);
+        }
+        else
+        {
+            lowHealthAnimator.SetBool("LowHealth", false);
+        }
     }
 
-    public void isHit(float damage)
+    public void IsHit(float damage)
     {
         playerHealth -= damage;
+        healthBar.SetHealth(damage);
     }
 
     public void UpgradeSpeed(float upgrade)
@@ -179,7 +191,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
         jumpMaxTime += upgrade;
     }
 
-    public void UpgradeHealth(float upgrade)
+    public void UpgradeHealth(int upgrade)
     {
         playerHealth += upgrade;
     }
