@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 
@@ -66,9 +67,9 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
         Death();
 
-        if(Input.GetKeyDown("f"))
+        if(playerHealth > playerMaxHealth) 
         {
-            IsHit(5f);
+            playerHealth = playerMaxHealth;
         }
     }
 
@@ -161,7 +162,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
     {
         if (playerHealth <= 0)
         {
-            playerHealth = 0;
+            SceneManager.LoadScene("Project 2");
         }
         else if(playerHealth <= playerMaxHealth / 5) 
         {
@@ -176,7 +177,7 @@ public class ThirdPersonCharacterController : MonoBehaviour
     public void IsHit(float damage)
     {
         playerHealth -= damage;
-        healthBar.SetHealth(damage);
+        healthBar.SetHealth(playerHealth);
     }
 
     public void UpgradeSpeed(float upgrade)
@@ -192,6 +193,12 @@ public class ThirdPersonCharacterController : MonoBehaviour
     }
 
     public void UpgradeHealth(int upgrade)
+    {
+        playerHealth += upgrade;
+        playerMaxHealth += upgrade;
+    }
+
+    public void Heal(int upgrade)
     {
         playerHealth += upgrade;
     }

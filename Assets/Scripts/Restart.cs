@@ -13,5 +13,9 @@ public class Restart : MonoBehaviour
             Debug.Log(other.gameObject.name);
             SceneManager.LoadScene("Project 2");
         }
+        else if(other.gameObject.CompareTag("Enemy"))
+        {
+            other.GetComponent<Enemy>().HitGround();
+        }
     }
 }

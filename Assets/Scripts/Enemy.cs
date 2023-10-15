@@ -9,8 +9,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float launch;
 
     [SerializeField] private ThirdPersonCharacterController playerController;
-    private Rigidbody rb;
+    [SerializeField] private ScoreUpdate scoreUpdater;
+    public Rigidbody rb;
     [SerializeField] private GameObject AIMover;
+    [SerializeField] private bool hitGroundAfter = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -18,13 +20,15 @@ public class Enemy : MonoBehaviour
         damage = 1;
         launch = 10f;
         playerController = GameObject.Find("3rd Person Player").GetComponent<ThirdPersonCharacterController>();
+        scoreUpdater = GameObject.Find("PointAdder").GetComponent<ScoreUpdate>();
         rb = GetComponent<Rigidbody>();
+    }
 
-        if(rb.velocity == new Vector3(0, 0, 0))
+    private void Update()
+    {
+        if (hitGroundAfter)
         {
-            rb.isKinematic = true;
-            //gameObject.transform.rotation = Quaternion.identity;
-            //rb.constraints = RigidbodyConstraints.FreezeRotation;
+            HitGround();
         }
     }
 
@@ -39,8 +43,19 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Hit");
             rb.AddExplosionForce(launch, collision.GetContact(0).point, 0.1f, 1, ForceMode.Impulse);
-            //rb.useGravity = false;
-            //rb.constraints = RigidbodyConstraints.None;
+            Invoke("DestroyAfterHit", 1f);
         }
+
+    }
+
+    private void DestroyAfterHit()
+    {
+        hitGroundAfter = true;
+    }
+
+    public void HitGround()
+    {
+        scoreUpdater.AddScore();
+        Destroy(this.gameObject);
     }
 }
