@@ -23,15 +23,18 @@ public class UpgradeMenu : MonoBehaviour
     private int cost4;
     private int cost5;
 
-    private void Update()
+    private void Start()
     {
-        score = scoreUpdate.score;
-
         cost1 = 40;
         cost2 = 40;
         cost3 = 40;
         cost4 = 40;
-        cost5 = 5;
+        cost5 = 40;
+    }
+
+    private void Update()
+    {
+        score = scoreUpdate.score;
     }
 
     public void UpgradeHealth()
@@ -82,13 +85,13 @@ public class UpgradeMenu : MonoBehaviour
         }
     }
 
-    public void Heal()
+    public void ScorePlus()
     {
         if (score >= cost5)
         {
             if(ThirdPerson.playerHealth <= ThirdPerson.playerMaxHealth) 
             {
-                ThirdPerson.Heal(10);
+                scoreUpdate.ScoreMultiply();
                 scoreUpdate.score -= cost5;
 
                 cost5 = cost5 * 2;

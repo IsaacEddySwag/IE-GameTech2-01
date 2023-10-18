@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
         {
             scoreUpdater.AddScore();
             Debug.Log("Hit");
-            anim.SetBool("Die", true);
+            Death();
             //Instantiate(bloodEffect, collision.GetContact(0).point, Quaternion.identity);
         }
 
