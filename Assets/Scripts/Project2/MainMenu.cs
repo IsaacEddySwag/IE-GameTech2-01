@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    //When called disable and hide the players cursor then load the level 1 scene
     public void StartGame()
     {
         SceneManager.LoadScene("Project 2");
@@ -12,6 +13,7 @@ public class MainMenu : MonoBehaviour
         Cursor.visible = false;
     }
 
+    //When called quits out of the game
     public void Quit()
     {
         Application.Quit();

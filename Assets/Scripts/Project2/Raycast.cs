@@ -15,8 +15,7 @@ public class Raycast : MonoBehaviour
 
     public Vector3 hit;
 
-
-
+    //Enables the action map then sets the action map of the player to be equal to a variables
     private void Awake()
     {
         characterInputActions.FindActionMap("Gameplay").Enable();
@@ -51,11 +50,13 @@ public class Raycast : MonoBehaviour
         hit = ray.GetPoint(distance);
     }
 
+    //Increases the distance the raycast reaches when invoked
     public void UpgradeDistance(float upgrade)
     {
         distance += upgrade;
     }
 
+    //Draws a small ray on the camera showing the location of the raycast in editor for debugging
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

@@ -22,6 +22,7 @@ public class UpgradeMenu : MonoBehaviour
     private int cost4;
     private int cost5;
 
+    //Sets the cost of all upgrades equal to their inital cost on load
     private void Start()
     {
         cost1 = 40;
@@ -31,11 +32,13 @@ public class UpgradeMenu : MonoBehaviour
         cost5 = 40;
     }
 
+    //Updates score variable in code based on the players current score
     private void Update()
     {
         score = scoreUpdate.score;
     }
 
+    //Upgrades the players health then doubles the cost of upgrade and shows that update in the canvas
     public void UpgradeHealth()
     {
         if(score >= cost1)
@@ -48,6 +51,7 @@ public class UpgradeMenu : MonoBehaviour
             CostText1.SetText(cost1.ToString());
         }
     }
+    //Upgrades the players speed then doubles the cost of upgrade and shows that update in the canvas
     public void UpgradeSpeed()
     {
         if (score >= cost2)
@@ -59,7 +63,7 @@ public class UpgradeMenu : MonoBehaviour
             CostText2.SetText(cost2.ToString());
         }
     }
-
+    //Upgrades the players jump then doubles the cost of upgrade and shows that update in the canvas
     public void UpgradeJump()
     {
         if (score >= cost3)
@@ -71,7 +75,7 @@ public class UpgradeMenu : MonoBehaviour
             CostText3.SetText(cost3.ToString());
         }
     }
-
+    //Upgrades the players throw speed then doubles the cost of upgrade and shows that update in the canvas
     public void UpgradeThrow()
     {
         if (score >= cost4)
@@ -83,7 +87,7 @@ public class UpgradeMenu : MonoBehaviour
             CostText4.SetText(cost4.ToString());
         }
     }
-
+    //Upgrades the players score per kill then doubles the cost of upgrade and shows that update in the canvas
     public void ScorePlus()
     {
         if (score >= cost5)

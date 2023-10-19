@@ -6,16 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class Restart : MonoBehaviour
 {
+    //Checks if the object with tag player hits its trigger, if so then it resets the current level to is intial state
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            Debug.Log(other.gameObject.name);
             SceneManager.LoadScene("Project 2");
-        }
-        else if(other.gameObject.CompareTag("Enemy"))
-        {
-            //other.GetComponent<Enemy>().HitGround();
         }
     }
 }

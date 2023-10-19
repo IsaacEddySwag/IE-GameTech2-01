@@ -7,22 +7,14 @@ public class UpgradeThrowSpeed : MonoBehaviour
     private Animator animator;
     float throwSpeed;
 
-    // Start is called before the first frame update
+    //Sets the animator of the object to a variable and sets the base speed for the throwing animation
     void Start()
     {
         animator = GetComponent<Animator>();
         throwSpeed = 1;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyUp(KeyCode.Escape))
-        {
-            UpgradeThrow(0.1f);
-        }
-    }
-
+    //When invokes increases the speed of the throw animation making the player throw snow balls faster
     public void UpgradeThrow(float upgrade)
     {
         throwSpeed += upgrade;
