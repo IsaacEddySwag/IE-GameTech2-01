@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public Rigidbody rb;
     [SerializeField] private GameObject AIMover;
     private Animator anim;
+    [SerializeField] ParticleSystem bloodEffect;
 
     // Start is called before the first frame update
     void Awake()
@@ -33,8 +34,8 @@ public class Enemy : MonoBehaviour
         {
             scoreUpdater.AddScore();
             Debug.Log("Hit");
+            Instantiate(bloodEffect, collision.GetContact(0).point, Quaternion.identity);
             Death();
-            //Instantiate(bloodEffect, collision.GetContact(0).point, Quaternion.identity);
         }
 
     }

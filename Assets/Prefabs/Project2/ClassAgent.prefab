@@ -190,11 +190,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3213d8f9bfb3bed499cd9f8a6abd4a71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 5
   playerController: {fileID: 0}
   scoreUpdater: {fileID: 0}
   rb: {fileID: 2465209703566465410}
   AIMover: {fileID: 8670407172577384239}
+  bloodEffect: {fileID: 1879626346622136622, guid: dfdb55fd70f6e22429dfc713e203e22f, type: 3}
 --- !u!54 &2465209703566465410
 Rigidbody:
   m_ObjectHideFlags: 0

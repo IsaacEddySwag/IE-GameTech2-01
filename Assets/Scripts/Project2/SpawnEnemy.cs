@@ -6,15 +6,21 @@ public class SpawnEnemy : MonoBehaviour
 {
     public float delayTime = 0f;
     public float delayRemove = 10f;
+    private float pointCount = 0f;
     public GameObject enemy;
     private ScoreUpdate pointer;
 
     void Start()
     {
         pointer = GameObject.FindGameObjectWithTag("PointAdder").GetComponent<ScoreUpdate>();
-        CheckPoints();
-        delayTime = Random.Range(30, 400);
+        delayTime = Random.Range(100f, 300f);
         Invoke("Spawning", delayTime - delayRemove);
+    }
+
+    private void Update()
+    {
+        CheckPoints();
+
     }
 
     public void Spawning()
@@ -25,6 +31,10 @@ public class SpawnEnemy : MonoBehaviour
 
     public void CheckPoints()
     {
-        delayRemove += pointer.totalScore / 10;
+        if (pointer.totalScore >= pointCount + 200)
+        {
+            delayTime -= delayRemove;
+            pointCount = pointer.totalScore;
+        }
     }
 }

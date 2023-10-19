@@ -16,7 +16,6 @@ public class UpgradeMenu : MonoBehaviour
 
 
     private int score;
-
     private int cost1;
     private int cost2;
     private int cost3;
@@ -53,7 +52,7 @@ public class UpgradeMenu : MonoBehaviour
     {
         if (score >= cost2)
         {
-            ThirdPerson.UpgradeSpeed(0.5f);
+            ThirdPerson.UpgradeSpeed(1f);
             scoreUpdate.score -= cost2;
 
             cost2 = cost2 * 2;
@@ -65,7 +64,7 @@ public class UpgradeMenu : MonoBehaviour
     {
         if (score >= cost3)
         {
-            ThirdPerson.UpgradeJump(0.1f);
+            ThirdPerson.UpgradeJump(0.2f);
             scoreUpdate.score -= cost3;
 
             cost3 = cost3 * 2;
