@@ -60,6 +60,10 @@ public class ThirdPersonCharacterController : MonoBehaviour
 
         //Sets the player health to be the max health of the player
         playerHealth = playerMaxHealth;
+    }
+
+    private void Start()
+    {
         //Updates the health bar to reflect they player being at max health
         healthBar.SetMaxHealth(playerMaxHealth);
     }

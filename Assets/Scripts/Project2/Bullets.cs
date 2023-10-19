@@ -7,12 +7,12 @@ public class Bullets : MonoBehaviour
     Rigidbody rb;
     private Raycast raycast;
 
-    public float shotSpeed = 5f;
-    public bool isShooting = false;
+    public float ShotSpeed = 5f;
+    private bool isShooting = false;
 
     private Vector3 hitLocation;
 
-    public ParticleSystem puff;
+    [SerializeField] private ParticleSystem puff;
     
 
     private void Awake()
@@ -28,7 +28,7 @@ public class Bullets : MonoBehaviour
         if (isShooting)
         {
             //A variable is created and is assigned shotSpeed times delta time
-            var step = shotSpeed * Time.deltaTime;
+            var step = ShotSpeed * Time.deltaTime;
             //The objects transform is set to move towards the hit location of the raycast by the speed set in step
             transform.position = Vector3.MoveTowards(transform.position, hitLocation, step);
         }

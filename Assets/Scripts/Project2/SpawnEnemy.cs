@@ -15,7 +15,7 @@ public class SpawnEnemy : MonoBehaviour
         //Gets the score update script from an object in scene and sets it to a variable
         pointer = GameObject.FindGameObjectWithTag("PointAdder").GetComponent<ScoreUpdate>();
         //Sets the delay time to be a random amount of time between 100 and 300 seconds
-        delayTime = Random.Range(100f, 300f);
+        delayTime = Random.Range(50, 300);
         //Invokes the spawning function which spawns enemies on delay by the delay time
         Invoke("Spawning", delayTime);
     }

@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private ThirdPersonCharacterController playerController;
     [SerializeField] private ScoreUpdate scoreUpdater;
-    public Rigidbody rb;
+    public Rigidbody Rb;
     [SerializeField] ParticleSystem bloodEffect;
 
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
         playerController = GameObject.Find("3rd Person Player").GetComponent<ThirdPersonCharacterController>();
         scoreUpdater = GameObject.Find("PointAdder").GetComponent<ScoreUpdate>();
         //Gets the rigidbody from the game object and sets it to a variable
-        rb = GetComponent<Rigidbody>();
+        Rb = GetComponent<Rigidbody>();
     }
 
     private void OnCollisionEnter(Collision collision)

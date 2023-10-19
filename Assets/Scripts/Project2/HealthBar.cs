@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     private Slider slider;
-    public Gradient gradient;
-    public Image fill;
+    public Gradient Gradient;
+    public Image Fill;
     private Animator anim;
 
     //Gets the slider and animator of the object script is attached too and sets them to variables.
-    private void Start()
+    private void Awake()
     {
         slider = GetComponent<Slider>();
         anim = GetComponent<Animator>();
@@ -26,7 +26,7 @@ public class HealthBar : MonoBehaviour
         //Sets the value of the slider equal to the value input of max health
         slider.value = maxHealth;
         //Changes the gradient color based on the position of the health bar slider
-        fill.color = gradient.Evaluate(1f);
+        Fill.color = Gradient.Evaluate(1f);
     }
 
     //Updates the player health bar to be equal to the players current health
@@ -36,7 +36,7 @@ public class HealthBar : MonoBehaviour
         slider.value = health;
 
         //Changes the gradient color based on the position of the health bar slider
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        Fill.color = Gradient.Evaluate(slider.normalizedValue);
     }
 
     //Function sets bool to true, this variable in the animator so that the healthbar can fade in
